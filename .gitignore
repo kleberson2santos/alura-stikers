@@ -1,4 +1,8 @@
 /figurinhas/
 # IntelliJ
-/.idea/
+.idea
+*.iws
+*.iml
+*.ipr
+
 /out/

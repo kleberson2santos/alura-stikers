@@ -1,14 +1,14 @@
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/TopMovies.json";
+//        String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/TopMovies.json";
         ExtratorDeConteudoDoIMDB extrator = new ExtratorDeConteudoDoIMDB();
 
 //        String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/NASA-APOD.json";
+        String url = "http://localhost:8080/linguagens";
 //        ExtratorDeConteudoDaNasa extrator = new ExtratorDeConteudoDaNasa();
 
         var http = new ClientHttp();

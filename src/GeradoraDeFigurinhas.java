@@ -22,7 +22,7 @@ public class GeradoraDeFigurinhas {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         graphics.drawImage(original, 0, 0, null);
 
-        Font font = new Font("Impact", Font.BOLD, 80);
+        Font font = new Font("Impact", Font.BOLD, 70);
         graphics.setFont(font);
         graphics.setColor(Color.YELLOW);
         String text = "TOPZERA";
