@@ -1,43 +1,33 @@
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 
 public class App {
     public static void main(String[] args) throws Exception {
         String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/TopMovies.json";
-        URI uri = URI.create(url);
+        ExtratorDeConteudoDoIMDB extrator = new ExtratorDeConteudoDoIMDB();
 
-        var httpClient = HttpClient.newHttpClient();
+//        String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/NASA-APOD.json";
+//        ExtratorDeConteudoDaNasa extrator = new ExtratorDeConteudoDaNasa();
 
-        HttpRequest request = HttpRequest.newBuilder(uri).GET().build();
-        HttpResponse.BodyHandler<String> responseBodyHandler = HttpResponse.BodyHandlers.ofString();
+        var http = new ClientHttp();
+        String json = http.buscaDados(url);
 
-        HttpResponse<String> httpResponse = httpClient.send(request, responseBodyHandler);
+        List<Conteudo> listaDeConteudos = extrator.extraiConteudos(json);
 
-        System.out.println(httpResponse);
-        String body = httpResponse.body();
-        System.out.println( body);
-
-        JsonParser jsonParser = new JsonParser();
-
-        List<Map<String, String>> listaDeFilmes = jsonParser.parse(body);
-        for (Map<String, String> filme : listaDeFilmes) {
-
-            InputStream inputStream = new URL(filme.get("image")).openStream();
+        for (Conteudo conteudo : listaDeConteudos) {
+            InputStream inputStream = new URL(conteudo.getUrlImagem()).openStream();
             GeradoraDeFigurinhas geradora = new GeradoraDeFigurinhas();
-            geradora.cria(inputStream, filme.get("title").concat(".png"));
+            String fileName = conteudo.getTitulo().concat(".png");
+            geradora.cria(inputStream, fileName);
 
-            System.out.printf("Filme: \u001b[1m\u001b[30m\u001b[43m%s\u001b[m\n",filme.get("title"));
-            System.out.print("Classificação: ");
-            int rating = Double.valueOf(filme.get("imDbRating")).intValue();
-            for (int i = 0; i < rating; i++) {
-                System.out.print("⭐");
-            }
+            System.out.printf("Titulo: \u001b[1m\u001b[30m\u001b[43m%s\u001b[m\n",conteudo.getTitulo());
+//            System.out.print("Classificação: ");
+//            int rating = Double.valueOf(conteudo.get("imDbRating")).intValue();
+//            for (int i = 0; i < rating; i++) {
+//                System.out.print("⭐");
+//            }
             System.out.println();
         }
 
